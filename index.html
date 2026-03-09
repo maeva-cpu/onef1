@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONEF1 — Votre Grand Prix, Clé en Main</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #B8952A;
+    --gold-light: #D4AF45;
+    --gold-dark: #8A6E1A;
+    --black: #080808;
+    --black-2: #111111;
+    --black-3: #1a1a1a;
+    --white: #F5F0E8;
+    --gray: #888880;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+    opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 0 60px;
+    height: 70px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(184,149,42,0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--white); }
+
+  .nav-links {
+    display: flex; gap: 40px; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 10px 24px;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .nav-cta:hover { background: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    position: relative;
+    display: flex; align-items: flex-end;
+    padding: 0 60px 80px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      linear-gradient(to right, rgba(8,8,8,0.85) 40%, rgba(8,8,8,0.2) 100%),
+      linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 50%);
+    z-index: 1;
+  }
+
+  .hero-video-bg {
+    position: absolute; inset: 0;
+    background: 
+      url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800') center/cover no-repeat;
+    transform: scale(1.05);
+    animation: heroZoom 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroZoom {
+    from { transform: scale(1.05); }
+    to { transform: scale(1.12); }
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 700px;
+  }
+
+  .hero-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 9vw, 130px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.7);
+    line-height: 1.6;
+    max-width: 480px;
+    margin-bottom: 40px;
+  }
+
+  .hero-buttons {
+    display: flex; gap: 16px; align-items: center;
+  }
+
+  .btn-primary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 16px 36px;
+    text-decoration: none;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gold-light);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+
+  .btn-secondary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    transition: color 0.3s;
+  }
+  .btn-secondary:hover { color: var(--gold); }
+  .btn-secondary::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+  .btn-secondary:hover::after { transform: translateX(4px); }
+
+  .hero-stats {
+    position: absolute; right: 60px; bottom: 80px;
+    z-index: 2;
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .stat {
+    text-align: right;
+    border-right: 2px solid var(--gold);
+    padding-right: 20px;
+  }
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-indicator {
+    position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+    z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 60px; }
+
+  .section-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 30px; height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5vw, 72px);
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  /* POURQUOI ONEF1 */
+  .why {
+    background: var(--black-2);
+    position: relative;
+    overflow: hidden;
+  }
+  .why::before {
+    content: 'ONE';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 400px;
+    color: rgba(184,149,42,0.03);
+    top: -80px; right: -60px;
+    letter-spacing: -10px;
+    pointer-events: none;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+
+  .why-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(184,149,42,0.1);
+  }
+
+  .why-card {
+    background: var(--black-2);
+    padding: 40px 32px;
+    transition: background 0.3s;
+  }
+  .why-card:hover { background: var(--black-3); }
+
+  .why-card-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+  .why-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .why-card p {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.6;
+  }
+
+  .why-text h2 { color: var(--white); }
+  .why-text p {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.65);
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+  .why-text .gold-line {
+    width: 60px; height: 2px;
+    background: var(--gold);
+    margin-bottom: 32px;
+  }
+
+  /* PACKS */
+  .packs { background: var(--black); }
+
+  .packs-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 60px;
+  }
+
+  .packs-note {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--gray);
+    max-width: 300px;
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  .packs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(184,149,42,0.15);
+  }
+
+  .pack-card {
+    background: var(--black-2);
+    padding: 50px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+  }
+  .pack-card:hover { transform: translateY(-8px); background: var(--black-3); }
+
+  .pack-card.featured {
+    background: var(--black-3);
+    border-top: 3px solid var(--gold);
+  }
+
+  .pack-badge {
+    position: absolute; top: 20px; right: 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 4px 12px;
+  }
+
+  .pack-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: rgba(184,149,42,0.1);
+    line-height: 1;
+    margin-bottom: -20px;
+  }
+
+  .pack-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .pack-tagline {
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+
+  .pack-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .pack-price-note {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 1px;
+    margin-bottom: 32px;
+  }
+
+  .pack-divider {
+    width: 40px; height: 1px;
+    background: rgba(184,149,42,0.4);
+    margin-bottom: 24px;
+  }
+
+  .pack-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 12px;
+    margin-bottom: 40px;
+  }
+  .pack-features li {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.7);
+    display: flex; align-items: flex-start; gap: 10px;
+    line-height: 1.4;
+  }
+  .pack-features li::before {
+    content: '—';
+    color: var(--gold);
+    flex-shrink: 0;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .pack-cta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    transition: gap 0.3s;
+  }
+  .pack-cta:hover { gap: 14px; }
+  .pack-cta::after { content: '→'; }
+
+  .pack-card.featured .pack-cta {
+    color: var(--black);
+    background: var(--gold);
+    padding: 14px 24px;
+    display: inline-flex;
+    margin-top: 0;
+  }
+  .pack-card.featured .pack-cta:hover { background: var(--gold-light); }
+
+  /* CARTE */
+  .carte {
+    background: var(--black-2);
+    padding: 80px 60px;
+    margin: 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .carte::after {
+    content: 'À LA CARTE';
+    position: absolute;
+    right: -20px; top: 50%; transform: translateY(-50%) rotate(90deg);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 120px;
+    color: rgba(184,149,42,0.05);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .carte-inner {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: center;
+  }
+
+  .carte-options {
+    display: flex; gap: 20px;
+  }
+
+  .carte-option {
+    flex: 1;
+    padding: 28px 20px;
+    border: 1px solid rgba(184,149,42,0.2);
+    text-align: center;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .carte-option:hover {
+    border-color: var(--gold);
+    background: rgba(184,149,42,0.05);
+  }
+  .carte-option-icon { font-size: 28px; margin-bottom: 12px; }
+  .carte-option h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .carte-option p {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.4;
+  }
+
+  /* TRACK DAYS */
+  .trackdays {
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .trackdays-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+
+  .trackdays-image {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+  }
+  .trackdays-image img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.8) contrast(1.1);
+    transition: transform 0.6s ease;
+  }
+  .trackdays-image:hover img { transform: scale(1.05); }
+  .trackdays-image::after {
+    content: '';
+    position: absolute; inset: 0;
+    border: 1px solid rgba(184,149,42,0.3);
+    pointer-events: none;
+  }
+
+  .trackdays-content p {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.65);
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .circuits-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+    margin-bottom: 40px;
+  }
+  .circuit {
+    padding: 12px 8px;
+    border: 1px solid rgba(184,149,42,0.2);
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+  .circuit:hover { border-color: var(--gold); }
+  .circuit-flag { font-size: 20px; margin-bottom: 6px; }
+  .circuit-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  /* COMMUNAUTE */
+  .communaute {
+    background: var(--black-2);
+    text-align: center;
+  }
+
+  .communaute .section-tag { justify-content: center; }
+  .communaute .section-tag::before { display: none; }
+
+  .communaute p {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.6);
+    max-width: 600px;
+    margin: 0 auto 60px;
+    line-height: 1.7;
+  }
+
+  .communaute-features {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+    max-width: 900px; margin: 0 auto 60px;
+  }
+
+  .comm-feature {
+    padding: 40px 30px;
+    border: 1px solid rgba(184,149,42,0.15);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .comm-feature:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+  .comm-feature-icon { font-size: 36px; margin-bottom: 16px; }
+  .comm-feature h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .comm-feature p {
+    font-size: 14px;
+    margin: 0;
+    color: rgba(245,240,232,0.5);
+  }
+
+  /* DESTINATIONS */
+  .destinations { background: var(--black); }
+
+  .destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .dest-card {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .dest-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.6) brightness(0.7);
+    transition: all 0.6s ease;
+  }
+  .dest-card:hover img {
+    filter: saturate(1) brightness(0.85);
+    transform: scale(1.08);
+  }
+  .dest-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 60%);
+    padding: 30px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .dest-flag { font-size: 28px; margin-bottom: 8px; }
+  .dest-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .dest-circuit {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* AGENCE */
+  .agence {
+    background: var(--black-2);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    padding: 0;
+  }
+
+  .agence-content {
+    padding: 120px 80px;
+  }
+
+  .agence-image {
+    position: relative;
+    overflow: hidden;
+  }
+  .agence-image img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.5) brightness(0.6);
+  }
+  .agence-image::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, var(--black-2) 0%, transparent 30%);
+  }
+
+  .agence-content p {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  /* CTA FINAL */
+  .cta-final {
+    background: var(--gold);
+    padding: 100px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-final::before {
+    content: 'ONEF1';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 300px;
+    color: rgba(0,0,0,0.08);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .cta-final h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    letter-spacing: 3px;
+    color: var(--black);
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .cta-final p {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(8,8,8,0.7);
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .btn-dark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--black);
+    padding: 18px 48px;
+    text-decoration: none;
+    position: relative;
+    transition: background 0.3s;
+    display: inline-block;
+  }
+  .btn-dark:hover { background: var(--black-3); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    padding: 80px 60px 40px;
+    border-top: 1px solid rgba(184,149,42,0.15);
+  }
+
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
+    margin-bottom: 60px;
+  }
+
+  .footer-brand .nav-logo {
+    display: block; margin-bottom: 20px; font-size: 32px;
+  }
+  .footer-brand p {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 280px;
+    margin-bottom: 24px;
+  }
+  .footer-contact {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 2;
+  }
+  .footer-contact a { color: var(--gold); text-decoration: none; }
+
+  .footer-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul a {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-col ul a:hover { color: var(--white); }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 40px;
+    border-top: 1px solid rgba(184,149,42,0.1);
+    font-size: 12px;
+    color: rgba(136,136,128,0.5);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 1px;
+  }
+
+  /* ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* GOLD LINE DECORATION */
+  .gold-accent {
+    display: inline-block;
+    position: relative;
+  }
+  .gold-accent::after {
+    content: '';
+    position: absolute;
+    bottom: 4px; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">ONE<span>F1</span></a>
+  <ul class="nav-links">
+    <li><a href="#destinations">Destinations</a></li>
+    <li><a href="#packs">Nos Packs</a></li>
+    <li><a href="#trackdays">Track Days</a></li>
+    <li><a href="#communaute">Communauté</a></li>
+    <li><a href="#agence">L'Agence</a></li>
+  </ul>
+  <a href="#packs" class="nav-cta">Réserver</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="accueil">
+  <div class="hero-video-bg"></div>
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">Agence F1 · Expériences Premium</div>
+    <h1>VOTRE<br>GRAND PRIX<br><em>CLÉ EN MAIN</em></h1>
+    <p class="hero-sub">Ne choisissez plus entre le vol, l'hôtel et le billet. ONEF1 crée votre expérience F1 de A à Z — pour les solos, les familles et les grands passionnés.</p>
+    <div class="hero-buttons">
+      <a href="#packs" class="btn-primary"><span>Découvrir nos packs</span></a>
+      <a href="#trackdays" class="btn-secondary">Track Days</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-number">24</div>
+      <div class="stat-label">Grands Prix</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Packs sur mesure</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">5</div>
+      <div class="stat-label">Circuits Track Day</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- POURQUOI ONEF1 -->
+<section class="why" id="why">
+  <div class="why-grid">
+    <div class="why-text fade-up">
+      <div class="section-tag">Notre promesse</div>
+      <h2 class="section-title">POURQUOI<br><span style="color:var(--gold)">CHOISIR</span><br>ONEF1 ?</h2>
+      <div class="gold-line"></div>
+      <p>Organiser un voyage F1 prend des dizaines d'heures. Entre les billets sold-out, les hôtels surbookés et la logistique du circuit, la passion se perd dans les détails.</p>
+      <p>ONEF1 centralise tout. Un seul interlocuteur, une seule réservation, une expérience pensée de A à Z pour que vous n'ayez plus qu'à profiter.</p>
+    </div>
+    <div class="why-cards fade-up">
+      <div class="why-card">
+        <div class="why-card-icon">✈️</div>
+        <h3>Expertise Travel</h3>
+        <p>Vols, hôtels premium et transferts gérés de A à Z pour chaque Grand Prix du calendrier.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">🏎️</div>
+        <h3>Immersion Totale</h3>
+        <p>Billets garantis et accès aux meilleures tribunes, même pour les GP sold-out.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">🤝</div>
+        <h3>Communauté F1</h3>
+        <p>Voyagez avec d'autres passionnés et restez connectés bien après le drapeau à damier.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">🏆</div>
+        <h3>Service 24/7</h3>
+        <p>Une assistance en temps réel pour chaque kilomètre, avant, pendant et après le GP.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKS -->
+<section class="packs" id="packs">
+  <div class="packs-header fade-up">
+    <div>
+      <div class="section-tag">Catalogue</div>
+      <h2 class="section-title">NOS PACKS<br><span style="color:var(--gold)">EXPÉRIENCE</span></h2>
+    </div>
+    <p class="packs-note">* Les prix varient selon la destination et votre lieu de départ. Un GP en Espagne depuis Paris sera moins cher qu'un GP à Abu Dhabi.</p>
+  </div>
+
+  <!-- CLIENTS -->
+  <div style="margin-bottom: 50px; padding: 32px 40px; border: 1px solid rgba(184,149,42,0.15); background: var(--black-2);" class="fade-up">
+    <p style="font-size:15px; font-weight:300; color:rgba(245,240,232,0.65); line-height:1.7;">
+      <span style="color:var(--gold); font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase;">Nos packs s'adressent à tous —</span>
+      les solos que l'on regroupe avec d'autres fans pour vivre le GP en communauté, les familles en quête d'un week-end mémorable clé en main, et les entreprises ou grands passionnés qui visent l'expérience ultime.
+    </p>
+  </div>
+
+  <div class="packs-grid fade-up">
+    <!-- CHALLENGER -->
+    <div class="pack-card">
+      <div class="pack-number">01</div>
+      <div class="pack-name">LE CHALLENGER</div>
+      <div class="pack-tagline">L'entrée dans la communauté ONEF1</div>
+      <div class="pack-price">À partir de 1 500€</div>
+      <div class="pack-price-note">Prix variable selon destination & départ</div>
+      <div class="pack-divider"></div>
+      <ul class="pack-features">
+        <li>Vol aller-retour inclus</li>
+        <li>2 nuits en hôtel 3★</li>
+        <li>Billet Pelouse 3 jours</li>
+        <li>Groupe Solo & Networking</li>
+        <li>Goodies ONEF1 offerts</li>
+      </ul>
+      <a href="#" class="pack-cta">Découvrir</a>
+    </div>
+
+    <!-- GRAND CHELEM -->
+    <div class="pack-card featured">
+      <div class="pack-badge">⭐ Populaire</div>
+      <div class="pack-number">02</div>
+      <div class="pack-name">LE GRAND CHELEM</div>
+      <div class="pack-tagline">Le parfait équilibre confort & immersion</div>
+      <div class="pack-price">À partir de 2 500€</div>
+      <div class="pack-price-note">Prix variable selon destination & départ</div>
+      <div class="pack-divider"></div>
+      <ul class="pack-features">
+        <li>Vol aller-retour inclus</li>
+        <li>3 nuits en hôtel 4★ centre-ville</li>
+        <li>Tribune Or numérotée</li>
+        <li>Transferts privés circuit-hôtel</li>
+        <li>Conciergerie 24/7</li>
+        <li>Goodies ONEF1 offerts</li>
+      </ul>
+      <a href="#" class="pack-cta">Découvrir</a>
+    </div>
+
+    <!-- PADDOCK CLUB -->
+    <div class="pack-card">
+      <div class="pack-number">03</div>
+      <div class="pack-name">LE PADDOCK CLUB</div>
+      <div class="pack-tagline">L'expérience absolue, sans compromis</div>
+      <div class="pack-price">À partir de 6 000€</div>
+      <div class="pack-price-note">Prix variable selon destination & départ</div>
+      <div class="pack-divider"></div>
+      <ul class="pack-features">
+        <li>Vol aller-retour en classe affaires</li>
+        <li>Hôtel 5★ de luxe</li>
+        <li>Accès VIP Paddock Club</li>
+        <li>Hospitalité complète</li>
+        <li>Rencontre avec des insiders</li>
+        <li>Chauffeur privé & conciergerie</li>
+      </ul>
+      <a href="#" class="pack-cta">Découvrir</a>
+    </div>
+  </div>
+
+  <!-- À LA CARTE -->
+  <div class="carte fade-up" style="margin-top: 2px;">
+    <div class="carte-inner">
+      <div>
+        <div class="section-tag">Flexibilité</div>
+        <h3 style="font-family:'Bebas Neue',sans-serif; font-size:40px; letter-spacing:2px; margin-bottom:12px;">RÉSERVATION<br><span style="color:var(--gold)">À LA CARTE</span></h3>
+        <p style="font-size:14px; font-weight:300; color:var(--gray); line-height:1.7;">Vous avez déjà une partie de votre voyage organisée ? ONEF1 s'adapte. Réservez uniquement ce dont vous avez besoin.</p>
+      </div>
+      <div class="carte-options">
+        <div class="carte-option">
+          <div class="carte-option-icon">✈️</div>
+          <h4>Vol</h4>
+          <p>Vols vers tous les circuits du calendrier F1</p>
+        </div>
+        <div class="carte-option">
+          <div class="carte-option-icon">🏨</div>
+          <h4>Hôtel</h4>
+          <p>Sélection d'hôtels premium près des circuits</p>
+        </div>
+        <div class="carte-option">
+          <div class="carte-option-icon">🎟️</div>
+          <h4>Billet GP</h4>
+          <p>Billets garantis même pour les GP sold-out</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACK DAYS -->
+<section class="trackdays" id="trackdays">
+  <div class="trackdays-inner">
+    <div class="trackdays-image fade-up">
+      <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800" alt="Track Day F1">
+    </div>
+    <div class="trackdays-content fade-up">
+      <div class="section-tag">Notre USP</div>
+      <h2 class="section-title">TRACK<br><span style="color:var(--gold)">DAYS</span></h2>
+      <p>Ce qui nous différencie vraiment de toute agence classique : en complément de votre pack, pilotez une Formule 3 avec un instructeur professionnel, sur ou près du circuit du GP.</p>
+      <p>C'est un moment collectif — plusieurs clients font la séance ensemble, se challengent, se soutiennent. Sur un circuit, les barrières sociales tombent. C'est là que se créent les liens les plus forts.</p>
+
+      <div style="margin-bottom: 32px;">
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:16px;">Phase 1 — Circuits disponibles</div>
+        <div class="circuits-grid">
+          <div class="circuit">
+            <div class="circuit-flag">🇲🇨</div>
+            <div class="circuit-name">Monaco</div>
+          </div>
+          <div class="circuit">
+            <div class="circuit-flag">🇬🇧</div>
+            <div class="circuit-name">Silverstone</div>
+          </div>
+          <div class="circuit">
+            <div class="circuit-flag">🇮🇹</div>
+            <div class="circuit-name">Monza</div>
+          </div>
+          <div class="circuit">
+            <div class="circuit-flag">🇧🇪</div>
+            <div class="circuit-name">Spa</div>
+          </div>
+          <div class="circuit">
+            <div class="circuit-flag">🇦🇪</div>
+            <div class="circuit-name">Abu Dhabi</div>
+          </div>
+        </div>
+      </div>
+      <a href="#" class="btn-primary"><span>Réserver un Track Day</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNAUTÉ -->
+<section class="communaute" id="communaute">
+  <div class="section-tag">Plus qu'une agence</div>
+  <h2 class="section-title fade-up">UNE <span style="color:var(--gold)">COMMUNAUTÉ</span><br>DE PASSIONNÉS</h2>
+  <p class="fade-up">Le lien entre nos clients ne s'arrête pas au drapeau à damier. ONEF1, c'est une communauté où les membres échangent avant le voyage, se retrouvent sur place, et restent connectés après.</p>
+
+  <div class="communaute-features fade-up">
+    <div class="comm-feature">
+      <div class="comm-feature-icon">👥</div>
+      <h3>Solo & Networking</h3>
+      <p>On regroupe les voyageurs solos avec d'autres fans pour vivre le GP ensemble</p>
+    </div>
+    <div class="comm-feature">
+      <div class="comm-feature-icon">💬</div>
+      <h3>Communauté en ligne</h3>
+      <p>Forum, groupe et application pour échanger avant, pendant et après chaque GP</p>
+    </div>
+    <div class="comm-feature">
+      <div class="comm-feature-icon">🔄</div>
+      <h3>Fidélité & Avantages</h3>
+      <p>Les membres ONEF1 bénéficient d'avantages exclusifs à chaque nouvelle réservation</p>
+    </div>
+  </div>
+  <a href="#packs" class="btn-primary"><span>Rejoindre la communauté</span></a>
+</section>
+
+<!-- DESTINATIONS -->
+<section class="destinations" id="destinations">
+  <div class="section-tag fade-up">Calendrier F1</div>
+  <h2 class="section-title fade-up">NOS <span style="color:var(--gold)">DESTINATIONS</span></h2>
+  <div class="destinations-grid fade-up">
+    <div class="dest-card">
+      <img src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=600" alt="Monaco">
+      <div class="dest-overlay">
+        <div class="dest-flag">🇲🇨</div>
+        <div class="dest-name">MONACO</div>
+        <div class="dest-circuit">Circuit de Monaco</div>
+      </div>
+    </div>
+    <div class="dest-card">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600" alt="Silverstone">
+      <div class="dest-overlay">
+        <div class="dest-flag">🇬🇧</div>
+        <div class="dest-name">SILVERSTONE</div>
+        <div class="dest-circuit">British Grand Prix</div>
+      </div>
+    </div>
+    <div class="dest-card">
+      <img src="https://images.unsplash.com/photo-1541447270866-a9e7b0d6c0f5?w=600" alt="Monza">
+      <div class="dest-overlay">
+        <div class="dest-flag">🇮🇹</div>
+        <div class="dest-name">MONZA</div>
+        <div class="dest-circuit">Italian Grand Prix</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENCE -->
+<section class="agence" id="agence" style="padding:0;">
+  <div class="agence-content">
+    <div class="section-tag">Qui sommes-nous</div>
+    <h2 class="section-title">L'AGENCE &<br><span style="color:var(--gold)">PARTENAIRES</span></h2>
+    <div style="width:60px;height:2px;background:var(--gold);margin:24px 0 32px;"></div>
+    <p>ONEF1 est née d'une passion : rendre la Formule 1 accessible à tous, des solos aux familles, des cadres aux entreprises.</p>
+    <p>Nous travaillons avec des partenaires sélectionnés — compagnies aériennes, hôtels premium, circuits — pour vous garantir la meilleure expérience à chaque Grand Prix.</p>
+    <a href="#" class="btn-primary" style="display:inline-block; margin-top:16px;"><span>Nous contacter</span></a>
+  </div>
+  <div class="agence-image">
+    <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800" alt="L'équipe ONEF1">
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-final">
+  <h2>PRÊT POUR VOTRE<br>PROCHAIN GRAND PRIX ?</h2>
+  <p>Contactez-nous et construisons ensemble votre expérience F1 idéale.</p>
+  <a href="mailto:contact@onef1.com" class="btn-dark">Réserver maintenant</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">ONE<span>F1</span></a>
+      <p>L'agence 360° qui démocratise l'expérience F1. Du vol au paddock, on s'occupe de tout.</p>
+      <div class="footer-contact">
+        <div>📍 47 rue des Couronnes, 75020 Paris</div>
+        <div>📞 01 23 45 67 89</div>
+        <div>✉️ <a href="mailto:contact@onef1.com">contact@onef1.com</a></div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Destinations</h4>
+      <ul>
+        <li><a href="#">Calendrier F1</a></li>
+        <li><a href="#">Monaco</a></li>
+        <li><a href="#">Silverstone</a></li>
+        <li><a href="#">Monza</a></li>
+        <li><a href="#">Abu Dhabi</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Nos Packs</h4>
+      <ul>
+        <li><a href="#">Le Challenger</a></li>
+        <li><a href="#">Le Grand Chelem</a></li>
+        <li><a href="#">Le Paddock Club</a></li>
+        <li><a href="#">À la carte</a></li>
+        <li><a href="#">Track Days</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>L'Agence</h4>
+      <ul>
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Partenaires</a></li>
+        <li><a href="#">Communauté</a></li>
+        <li><a href="#">Paddock Shop</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 ONEF1 — Tous droits réservés</span>
+    <span>Mentions légales · Politique de confidentialité</span>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX - 5 + 'px';
+    cursor.style.top = mouseY - 5 + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX - 18) * 0.15;
+    ringY += (mouseY - ringY - 18) * 0.15;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2)';
+      ring.style.transform = 'scale(1.5)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.transform = 'scale(1)';
+    });
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 50) {
+      nav.style.borderBottomColor = 'rgba(184,149,42,0.3)';
+    } else {
+      nav.style.borderBottomColor = 'rgba(184,149,42,0.15)';
+    }
+  });
+</script>
+</body>
+</html>
